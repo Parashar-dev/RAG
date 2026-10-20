@@ -19,6 +19,7 @@ This script executes the two final phases of RAG:
 =============================================================================
 """
 
+import os
 import chromadb
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -27,7 +28,7 @@ from dotenv import load_dotenv
 # 1. Environment & API Key Configuration
 # =============================================================================
 # load_dotenv() reads the .env file in the project root and sets environment
-# variables such as OPENAI_API_KEY so OpenAI client can authenticate automatically.
+# variables such as OPENROUTER_API_KEY or OPENAI_API_KEY.
 load_dotenv()
 
 # =============================================================================
@@ -70,8 +71,24 @@ print(results['documents'])
 # =============================================================================
 # 5. Phase 2 of RAG: Augmentation (Constructing the Prompt)
 # =============================================================================
-# Initialize the OpenAI client (picks up OPENAI_API_KEY from environment)
-client = OpenAI()
+# Initialize client (supports both OpenRouter and standard OpenAI)
+openrouter_key = os.getenv("OPENROUTER_API_KEY")
+openai_key = os.getenv("OPENAI_API_KEY")
+
+if openrouter_key:
+    client = OpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key=openrouter_key,
+    )
+    # Default to a strong, cost-effective OpenRouter model or whatever is set in .env
+    model = os.getenv("LLM_MODEL") or os.getenv("OPENROUTER_MODEL") or "meta-llama/llama-3.3-70b-instruct"
+elif openai_key:
+    client = OpenAI(api_key=openai_key)
+    model = os.getenv("LLM_MODEL", "gpt-4o")
+else:
+    raise ValueError(
+        "No API key found! Please set OPENROUTER_API_KEY or OPENAI_API_KEY in your .env file."
+    )
 
 # "Prompt Augmentation" is the core concept of RAG:
 # We build a strict prompt containing:
@@ -95,9 +112,10 @@ The data:
 # 6. Phase 3 of RAG: Generation (Calling LLM with Context)
 # =============================================================================
 # We pass both the system prompt (containing the retrieved context and rules)
-# and the user's original query. GPT-4o synthesizes the final coherent answer.
+# and the user's original query. The chosen model synthesizes the final coherent answer.
+print(f"\nGenerating answer using model: {model}...")
 response = client.chat.completions.create(
-    model="gpt-4o",
+    model=model,
     messages=[
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_query}    

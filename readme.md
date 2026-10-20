@@ -49,7 +49,7 @@ Standard Large Language Models (LLMs) have a cutoff date and do not know your pr
 
 ## Prerequisites
 - Python 3.11+
-- OpenAI API Key
+- OpenRouter API Key (or OpenAI API Key)
 
 ---
 
@@ -86,13 +86,15 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 5. Add OpenAI API Key
+### 5. Add API Key
 
-Get an OpenAI API Key from here: https://platform.openai.com/settings/organization/admin-keys  
-Add it to `.env.example` and rename to `.env` (or copy it):
+Copy `.env.example` to `.env`:
 ```bash
 cp .env.example .env
 ```
+Open `.env` and add your API key:
+- **OpenRouter (Recommended)**: Get a key from [https://openrouter.ai/keys](https://openrouter.ai/keys) and set `OPENROUTER_API_KEY`. You can also configure `LLM_MODEL` (e.g. `meta-llama/llama-3.3-70b-instruct`, `openai/gpt-4o`, `deepseek/deepseek-chat`).
+- **OpenAI**: Get a key from [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys) and set `OPENAI_API_KEY`.
 
 ---
 
