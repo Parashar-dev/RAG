@@ -65,7 +65,7 @@ cd RAG
 ### 2. Create a virtual environment
 
 ```bash
-python -m venv venv
+python3 -m venv venv
 ```
 
 ### 3. Activate the virtual environment
@@ -131,7 +131,7 @@ LLM_MODEL="meta-llama/llama-3.3-70b-instruct"
 ### Step 3: Ingest Data into Vector DB (`fill_db.py`)
 Ensure your PDF document is in the `data/` folder (e.g., `data/VH021.pdf`), then run:
 ```bash
-python fill_db.py
+python3 fill_db.py
 ```
 **What happens here:**
 - Extracts text from the PDF.
@@ -144,7 +144,7 @@ python fill_db.py
 ### Step 4: Ask Questions (`ask.py`)
 Run the query script to chat with your document:
 ```bash
-python ask.py
+python3 ask.py
 ```
 Example question:
 > *What vegetables can grow in Florida?*
