@@ -105,13 +105,13 @@ Always activate your virtual environment before running scripts so Python can fi
 
 - **Linux / macOS:**
   ```bash
-  source .venv/bin/activate
+  source venv/bin/activate
   ```
 - **Windows:**
   ```bash
-  .venv\Scripts\activate
+  venv\Scripts\activate
   ```
-*(Your terminal prompt should now show `(.venv)`).*
+*(Your terminal prompt should now show `(venv)`).*
 
 ---
 
